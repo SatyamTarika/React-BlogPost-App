@@ -1,17 +1,16 @@
 import Navbar from "./Navbar";
-import Cards from "./Cards";
+import AddPost from "./AddPost";
+import { Container } from "reactstrap";
 
-const Base = ({title = "Welcome to my WebApp", children}) => {
-    return (
-        <div className="container-fluid m-0 p-0">
-            <Navbar/>
-
-            <Cards/>
-            {children}
-
-            {/* <Footer/> */}
-        </div>
-    );
+const Base = () => {
+  return (
+    <div className="container-fluid m-0 p-0">
+      <Navbar />
+      <Container>
+        <AddPost />
+      </Container>
+    </div>
+  );
 };
 
-export  default Base;
+export default Base;
