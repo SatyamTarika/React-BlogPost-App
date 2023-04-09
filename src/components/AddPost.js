@@ -1,3 +1,4 @@
+// import { connect } from "react-redux";
 import React, { useState } from "react";
 import {
   Card,
@@ -5,61 +6,46 @@ import {
   Form,
   Input,
   Button,
-  Container,
+  // Container,
   Row,
   Col,
 } from "reactstrap";
 
-const AddPost = () => {
+const AddPost = ({
+  captions,
+  addCaption,
+  editCaption,
+  deleteCaption,
+  removeAll,
+}) => {
   const [inputCaption, setInputCaption] = useState("");
-  const [captions, setCaptions] = useState([]); // Here empty array means , item ki jo values hongi initially empty array hongi
-  const [toggleEdit, submitToggleEdit] = useState(true);
 
-  const addCaption = () => {
+  const addPost = (e) => {
+    e.preventDefault();
     if (!inputCaption) {
-      // putting validation on input, if no input then do nothing
-    } else {
-      const allInputData = {
-        id: new Date().getTime().toString(),
-        name: inputCaption,
-      }; // using date to generate unique id
-      setCaptions([...captions, allInputData]); // ... is spread operator to retain previous entered data inside array
-      setInputCaption(""); // khali de rahe hai, so that pehle vaala variable empty ho sake
+      return;
     }
+    const newCaption = {
+      id: new Date().getTime().toString(),
+      name: inputCaption,
+    };
+    addCaption(newCaption);
+    setInputCaption("");
   };
 
-  //edit captions
-  const editCaption = (id) => {
-    const newcaption = captions.find((elem) => {
-      return (
-        elem.id === id,
-        <Form>
-          <div className="my-2">
-            <Input
-              type="text"
-              placeholder="Edit Caption"
-              value={newcaption.name}
-              onChange={(e) => setInputCaption(e.target.value)}
-            />
-          </div>
-        </Form>
-      );
-    });
+  const handleEdit = (caption) => {
+    const newCaption = {
+      ...caption,
+      name: inputCaption,
+    };
+    editCaption(newCaption);
   };
 
-  // to delete theparticular post, we need specific unique id for that post, for which we can use ind in map()
   const deletePost = (index) => {
     // jis post ki id hmare paas hai, leaving it baaki saari posts hame show krni hai ab
     const updatedposts = captions.filter((elem) => {
-      return index != elem.id;
+      return index !== elem.id;
     });
-    setCaptions(updatedposts);
-  };
-
-  // remove all posts
-
-  const removeall = () => {
-    setCaptions([""]);
   };
 
   return (
@@ -81,12 +67,10 @@ const AddPost = () => {
                   type="text"
                   placeholder="Caption"
                   value={inputCaption}
-                  // Here we are getting the updated inputValue from client and set it using useState on line 15
-                  // Then we will set this state in another variable in form of array also when we click on create Post, so that we can clear this variable if needed and store the data through other variable
                   onChange={(e) => setInputCaption(e.target.value)}
                 />
               </div>
-              <Button color="primary" onClick={addCaption}>
+              <Button color="primary" onClick={addPost}>
                 Create Post
               </Button>
             </Form>
@@ -99,7 +83,7 @@ const AddPost = () => {
           <h3>My Feed</h3>
         </Col>
         <Col className="text-end">
-          <Button color="danger" onClick={removeall}>
+          <Button color="danger" onClick={removeAll}>
             Remove Everything
           </Button>
         </Col>
