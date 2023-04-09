@@ -6,7 +6,6 @@ import {
   Form,
   Input,
   Button,
-  // Container,
   Row,
   Col,
 } from "reactstrap";
@@ -15,7 +14,6 @@ const AddPost = ({
   captions,
   addCaption,
   editCaption,
-  deleteCaption,
   removeAll,
 }) => {
   const [inputCaption, setInputCaption] = useState("");
@@ -38,11 +36,13 @@ const AddPost = ({
       ...caption,
       name: inputCaption,
     };
+    setInputCaption("");
     editCaption(newCaption);
+    
   };
 
   const deletePost = (index) => {
-    // jis post ki id hmare paas hai, leaving it baaki saari posts hame show krni hai ab
+    // Filtering out on basis of id
     const updatedposts = captions.filter((elem) => {
       return index !== elem.id;
     });
